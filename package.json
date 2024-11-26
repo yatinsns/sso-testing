@@ -1,0 +1,14 @@
+{
+    "name": "sso-demo",
+    "version": "1.0.0",
+    "description": "A basic SSO auto-submit project",
+    "main": "server/app.js",
+    "scripts": {
+        "start": "node server/app.js"
+    },
+    "dependencies": {
+        "body-parser": "^1.20.3",
+        "express": "^4.21.1",
+        "jsonwebtoken": "^9.0.2"
+    }
+}

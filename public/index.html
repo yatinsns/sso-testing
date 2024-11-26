@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWT Generator</title>
+</head>
+<body>
+  <h2>JWT Generator</h2>
+  <form id="jwtForm" action="/sso-endpoint" method="POST">
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="secret">Private Secret Key:</label><br>
+    <input type="password" id="secret" name="secret" required><br><br>
+
+    <!-- Hidden input for the generated JWT -->
+    <input type="hidden" id="JWTResponse" name="JWTResponse">
+
+    <button type="button" onclick="generateJWT()">Generate and Submit</button>
+  </form>
+
+  <p id="status"></p>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/10.5.25/jsrsasign-all-min.js"></script>
+  <script>
+    function generateJWT() {
+      // Get email and secret key from the form
+      const email = document.getElementById("email").value;
+      const secret = document.getElementById("secret").value;
+
+      if (!email || !secret) {
+        document.getElementById("status").innerText = "Both email and secret key are required.";
+        return;
+      }
+
+      // Generate JWT Header
+      const header = { alg: "RS256", typ: "JWT" };
+
+      // Generate JWT Payload
+      const payload = { email: email, iat: Math.floor(Date.now() / 1000) };
+
+      // Encode the header and payload
+      const sHeader = JSON.stringify(header);
+      const sPayload = JSON.stringify(payload);
+
+      // Generate the JWT using the secret key
+      const jwt = KJUR.jws.JWS.sign("RS256", sHeader, sPayload, secret);
+
+      console.log("Generated JWT:", jwt);
+
+      // Set the JWT in the hidden input field
+      document.getElementById("JWTResponse").value = jwt;
+
+      // Submit the form
+      document.getElementById("jwtForm").submit();
+    }
+  </script>
+</body>
+</html>
