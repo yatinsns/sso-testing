@@ -1,4 +1,4 @@
-# sample-sso-app
+# sso-testing
 
 npm install
 node server/app.js
